@@ -38,7 +38,7 @@ data["OVERALL"] = {
 data["BY_CATEGORIES"] = {}
 
 # Overall sells
-print(f"""Style.BRIGHT + Fore.MAGENTA + "\nOVERALL SELLS" + Style.RESET_ALL
+print(f"""{Style.BRIGHT + Fore.MAGENTA}\n\nOVERALL SELLS{Style.RESET_ALL}
 ● Products: {', '.join(data["OVERALL"]["products"])}
 ● Overall price: {data["OVERALL"]["overall_price"]}
 ● Average price: {data["OVERALL"]["average_price"]}
@@ -56,7 +56,7 @@ for product, price, quantity, category in sells:
     data["BY_CATEGORIES"][category]["products"].append(product)
     data["BY_CATEGORIES"][category]["overall_price"] += price * quantity
 
-print(Style.BRIGHT + Fore.MAGENTA + "\nSELLS BY CATEGORIES" + Style.RESET_ALL)
+print(Style.BRIGHT + Fore.MAGENTA + "SELLS BY CATEGORIES" + Style.RESET_ALL)
 for category in data["BY_CATEGORIES"].keys():
     data["BY_CATEGORIES"][category]["average_price"] = round(data["BY_CATEGORIES"][category]["overall_price"] / sum([int(sell[2]) for sell in sells if sell[3] == category]), 2)
     print(f"""Category: {Fore.YELLOW + category.upper() + Fore.RESET}
