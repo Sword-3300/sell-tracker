@@ -1,7 +1,13 @@
 import json
-from colorama import Fore, Style
 import datetime
 import statistics
+import os
+
+import rich.style
+from colorama import Fore, Style
+from rich.table import Table
+from rich import print as rprint
+from rich.style import Style as rstyle
 
 sells = [] # [[name, price, quantity, category], [name, price, quantity, category], ...]
 data = {}
@@ -37,12 +43,13 @@ data["OVERALL"] = {
 }
 data["BY_CATEGORIES"] = {}
 
-# Overall sells
-print(f"""{Style.BRIGHT + Fore.MAGENTA}\n\nOVERALL SELLS{Style.RESET_ALL}
-● Products: {', '.join(data["OVERALL"]["products"])}
-● Overall price: {data["OVERALL"]["overall_price"]}
-● Average price: {data["OVERALL"]["average_price"]}
-""")
+
+overall_table = Table(title="[bold magenta]OVERALL SELLS[/]")
+overall_table.add_column("[#7bb85a]Products[/]", justify="center")
+overall_table.add_column("[#7bb85a]Overall price[/]", justify="center")
+overall_table.add_column("[#7bb85a]Average price[/]", justify="center")
+overall_table.add_row((', '.join(data["OVERALL"]["products"])), str(data["OVERALL"]["overall_price"]), str(data["OVERALL"]["average_price"]))
+rprint(overall_table)
 
 # Sells by categories
 for product, price, quantity, category in sells:
@@ -56,17 +63,27 @@ for product, price, quantity, category in sells:
     data["BY_CATEGORIES"][category]["products"].append(product)
     data["BY_CATEGORIES"][category]["overall_price"] += price * quantity
 
-print(Style.BRIGHT + Fore.MAGENTA + "SELLS BY CATEGORIES" + Style.RESET_ALL)
+categories_table = Table(title="[bold magenta]SELLS BY CATEGORIES[/]")
+categories_table.add_column("Category", justify="center")
+categories_table.add_column("Products", justify="center")
+categories_table.add_column("Overall price", justify="center")
+categories_table.add_column("Average price", justify="center")
+
 for category in data["BY_CATEGORIES"].keys():
     data["BY_CATEGORIES"][category]["average_price"] = round(data["BY_CATEGORIES"][category]["overall_price"] / sum([int(sell[2]) for sell in sells if sell[3] == category]), 2)
-    print(f"""Category: {Fore.YELLOW + category.upper() + Fore.RESET}
-        ● Products: {', '.join(data["BY_CATEGORIES"][category]["products"])}
-        ● Overall price: {data["BY_CATEGORIES"][category]["overall_price"]}
-        ● Average price: {round(data["BY_CATEGORIES"][category]["overall_price"] / sum([int(sell[2]) for sell in sells if sell[3] == category]), 2)}""")
 
+    categories_table.add_row(category.upper(),
+                             ', '.join(data["BY_CATEGORIES"][category]["products"]),
+                             str(data["BY_CATEGORIES"][category]["overall_price"]),
+                             str(data["BY_CATEGORIES"][category]["average_price"]))
+
+rprint(categories_table)
 
 date_time = datetime.datetime.now()
 print(Style.DIM + Fore.CYAN + "\nReport generated at " + date_time.strftime("%d.%m.%Y %H:%M:%S") + Style.RESET_ALL)
 
 with open("report.json", "a+") as file:
     json.dump(data, file, indent=4)
+    report_path = f"file:///{os.path.abspath(file.name)}"
+
+rprint(f"[link={report_path}]Open report file[/]")
