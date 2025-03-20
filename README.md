@@ -3,7 +3,7 @@
 This project analyzes store sales data, calculates the total revenue of all sold products within a given period, and generates a structured JSON database containing the sales analysis. The goal is to provide insights into sales trends by aggregating data and performing basic analysis, such as total sales, category-based performance, and product-level insights.
 
 ## How to Use
-Input sales data in the format:
+- Input sales data in the format:
 `NAME:PRICE_PER_UNIT:QUANTITY:CATEGORY`  
 Example: `Apples:5:20:Fruits`  
 - The script will analyze the provided data and generate summary tables.  
