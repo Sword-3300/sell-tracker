@@ -1,21 +1,33 @@
 # Store Sales Analysis
 ## Overview
-This project is designed to analyze store sales data, calculate the overall price of all sold products within a given period, and generate a structured JSON database containing the sales analysis. The goal is to offer insights into sales trends by aggregating data and performing basic analysis, such as total sales and product performance.
+This project analyzes store sales data, calculates the total revenue of all sold products within a given period, and generates a structured JSON database containing the sales analysis. The goal is to provide insights into sales trends by aggregating data and performing basic analysis, such as total sales, category-based performance, and product-level insights.
 
-## How to use
-1. Write all sells one by one in the format NAME:PRICE_FOR_UNIT:QUANTITY:CATEGORY
-2. JSON file will be created with all the information will be created/
+## How to Use
+Input sales data in the format:
+NAME:PRICE_PER_UNIT:QUANTITY:CATEGORY
+Example: Apples:1.5:20:Fruits
+The script will analyze the provided data and generate summary tables.
+A JSON file containing all the analyzed sales information will be created for future reference.
 
 ## Features
-- Sales Data Analysis: The system processes sales data and calculates the overall price and average price of all sold products
-- Division by categories: The script will group all products by their categories.
-- JSON Database Creation: Generates a JSON file that organizes the sales analysis for future reference or further processing.
-- Product-level Insights: The analysis includes details on each product sold and its contribution to total sales.
+- Sales Data Analysis:
+   Lists all products.
+   Calculates the overall price of all sold products.
+   Determines the average price of sold products.
+- Category-Based Division:
+   Groups products by category.
+   Lists all products in each category.
+   Calculates the overall price for each category.
+   Determines the average price of sold products within each category.
+- JSON Report Generation: Saves the analysis in a structured JSON file for further processing.
+- Product-Level Insights: Provides details on each product’s contribution to total sales.
 
 ## Installation
 1. Clone the repository  
-`git clone https://github.com/yourusername/store-sales-analysis.git`
-2. Install all the requirements  
-   `pip install -r "requirements"`
-3. Launch the script  
-   `python main.py`
+`git clone https://github.com/Sword-3300/sell-tracker.git`
+2. Install the requirements  
+`pip install -r requirements.txt`
+3. Go to the script directory  
+`cd [script directory]`
+4. Run `main.py`  
+`python main.py`
