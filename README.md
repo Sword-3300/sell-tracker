@@ -4,10 +4,10 @@ This project analyzes store sales data, calculates the total revenue of all sold
 
 ## How to Use
 Input sales data in the format:
-NAME:PRICE_PER_UNIT:QUANTITY:CATEGORY
-Example: Apples:1.5:20:Fruits
-The script will analyze the provided data and generate summary tables.
-A JSON file containing all the analyzed sales information will be created for future reference.
+`NAME:PRICE_PER_UNIT:QUANTITY:CATEGORY`  
+Example: `Apples:5:20:Fruits`  
+- The script will analyze the provided data and generate summary tables.  
+- A JSON file containing all the analyzed sales information will be created for future reference.
 
 ## Features
 - Sales Data Analysis:
