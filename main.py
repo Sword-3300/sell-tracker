@@ -6,13 +6,20 @@ import os
 import rich.style
 from colorama import Fore, Style
 from rich.table import Table
-from rich import print as rprint
+from rich.panel import Panel
+from rich.console import Console
 from rich.style import Style as rstyle
 
 sells = [] # [[name, price, quantity, category], [name, price, quantity, category], ...]
 data = {}
+console = Console()
+rprint = console.print
 
-print(f"{Fore.YELLOW}Welcome to the sell tracker!{Fore.RESET}")
+rprint(Panel(
+        "[#e5c07b]Welcome to the sell tracker![/]",
+        title="[#e5c07b]Hello![/]",
+        width=console.width
+    ), justify="center")
 print("Write a sell in the format" + Fore.CYAN + " name:price_for_one_unit:quantity:category" + Fore.RESET, end='. ')
 print("If you want to stop writing sells, type '" + Fore.CYAN + "stop" + Fore.RESET + "'.")
 
@@ -33,13 +40,18 @@ while True:
     else:
         print(Fore.RED + "Invalid format. Your sell will not be submitted" + Fore.RESET)
         continue
-
+while True:
+    try:
+        customers_number = int(input("Number of customers: "))
+        break
+    except ValueError:
+        rprint("[red]Invalid number of customers[/]")
 
 data["DATE"] = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 data["OVERALL"] = {
     "products": [sell[0] for sell in sells],
-    "overall_price": sum([float(sell[1]) for sell in sells]),
-    "average_price": round(statistics.mean([float(sell[1]) for sell in sells]), 2)
+    "overall_price": sum([float(sell[1]) * int(sell[2]) for sell in sells]),
+    "average_price": round(statistics.mean([float(sell[1]) * int(sell[2]) for sell in sells]), 2)
 }
 data["BY_CATEGORIES"] = {}
 
@@ -48,7 +60,9 @@ overall_table = Table(title="[bold magenta]OVERALL SELLS[/]")
 overall_table.add_column("[#7bb85a]Products[/]", justify="center")
 overall_table.add_column("[#7bb85a]Overall price[/]", justify="center")
 overall_table.add_column("[#7bb85a]Average price[/]", justify="center")
-overall_table.add_row((', '.join(data["OVERALL"]["products"])), str(data["OVERALL"]["overall_price"]), str(data["OVERALL"]["average_price"]))
+overall_table.add_row(', '.join(data["OVERALL"]["products"]),
+                      str(data["OVERALL"]["overall_price"]),
+                      str(data["OVERALL"]["average_price"]))
 rprint(overall_table)
 
 # Sells by categories
@@ -79,11 +93,18 @@ for category in data["BY_CATEGORIES"].keys():
 
 rprint(categories_table)
 
-date_time = datetime.datetime.now()
-print(Style.DIM + Fore.CYAN + "\nReport generated at " + date_time.strftime("%d.%m.%Y %H:%M:%S") + Style.RESET_ALL)
+most_popular_products = [sell[0] for sell in sells if int(sell[2]) == max(int(sell[2]) for sell in sells)]
+least_popular_products = [sell[0] for sell in sells if int(sell[2]) == min(int(sell[2]) for sell in sells)]
+popularity_table = Table(title="[bold magenta]POPULARITY ANALYSIS[/]")
+popularity_table.add_column("The most popular products(s)", justify="center")
+popularity_table.add_column("The least popular products(s)", justify="center")
+popularity_table.add_row(', '.join(most_popular_products), ', '.join(least_popular_products))
+rprint(popularity_table)
 
+print(f"Average receipt price: {data["OVERALL"]["overall_price"] / customers_number}")
+
+print(Style.DIM + Fore.CYAN + "\nReport saved at " + datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S") + Style.RESET_ALL)
 with open("report.json", "a+") as file:
     json.dump(data, file, indent=4)
     report_path = f"file:///{os.path.abspath(file.name)}"
-
 rprint(f"[link={report_path}]Open report file[/]")
