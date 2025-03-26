@@ -4,7 +4,6 @@ import statistics
 import os
 
 import rich.style
-from colorama import Fore, Style
 from rich.table import Table
 from rich.panel import Panel
 from rich.console import Console
@@ -60,15 +59,26 @@ while True:
     except ValueError:
         rprint("[red]Invalid number of customers[/]")
 
+most_popular_products = [sell[0] for sell in sells if int(sell[2]) == max(int(sell[2]) for sell in sells)]
+least_popular_products = [sell[0] for sell in sells if int(sell[2]) == min(int(sell[2]) for sell in sells)]
+
+
 data["DATE"] = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+data["CUSTOMERS_NUMBER"] = customers_number
 data["OVERALL"] = {
     "products": [sell[0] for sell in sells],
     "overall_price": sum([float(sell[1]) * int(sell[2]) for sell in sells]),
     "average_price": round(statistics.mean([float(sell[1]) * int(sell[2]) for sell in sells]), 2)
 }
 data["BY_CATEGORIES"] = {}
+data["POPULARITY"] = {
+    "MOST_POPULAR_PRODUCT(S)": ', '.join(most_popular_products) + f" ({next(quantity for name, _, quantity, _ in sells for product in most_popular_products if name == product)})",
+    "LEAST_POPULAR_PRODUCT(S)": ', '.join(least_popular_products) + f" ({next(quantity for name, _, quantity, _ in sells for product in least_popular_products if name == product)})"
+}
+data["AVERAGE_RECEIPT"] = round(data["OVERALL"]["overall_price"] / customers_number, 2)
 
-print(f"\nAverage receipt price: {round(data["OVERALL"]["overall_price"] / customers_number, 2)}\n")
+
+print(f"\nAverage receipt price: {data['AVERAGE_RECEIPT']}\n")
 
 overall_table = Table(title="[bold magenta]OVERALL SELLS[/]")
 overall_table.add_column("[#7bb85a]Products[/]", justify="center")
@@ -104,11 +114,8 @@ for category in data["BY_CATEGORIES"].keys():
                              ', '.join(data["BY_CATEGORIES"][category]["products"]),
                              str(data["BY_CATEGORIES"][category]["overall_price"]),
                              str(data["BY_CATEGORIES"][category]["average_price"]))
-
 rprint(categories_table)
 
-most_popular_products = [sell[0] for sell in sells if int(sell[2]) == max(int(sell[2]) for sell in sells)]
-least_popular_products = [sell[0] for sell in sells if int(sell[2]) == min(int(sell[2]) for sell in sells)]
 popularity_table = Table(title="[bold magenta]POPULARITY ANALYSIS[/]")
 popularity_table.add_column("[#7bb85a]The most popular products(s)[/]", justify="center")
 popularity_table.add_column("[#7bb85a]The least popular products(s)[/]", justify="center")
@@ -119,6 +126,5 @@ rprint(popularity_table)
 with open("report.json", "a+") as file:
     json.dump(data, file, indent=4)
     report_path = f"file:///{os.path.abspath(file.name)}"
-
 rprint(Panel(f"""[#e5c07b]Report saved at {datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")}
 [link={report_path} #e5c07b]Open report file[/]""", width=console.width), justify="center")
