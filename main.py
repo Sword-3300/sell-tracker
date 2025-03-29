@@ -78,7 +78,11 @@ data["POPULARITY"] = {
 data["AVERAGE_RECEIPT"] = round(data["OVERALL"]["overall_price"] / customers_number, 2)
 
 
-print(f"\nAverage receipt price: {data['AVERAGE_RECEIPT']}\n")
+rprint(Panel(
+        f"Average receipt price: {data['AVERAGE_RECEIPT']}",
+        title="[#e5c07b]Average receipt[/]",
+        width=console.width
+    ), justify="center")
 
 overall_table = Table(title="[bold magenta]OVERALL SELLS[/]")
 overall_table.add_column("[#7bb85a]Products[/]", justify="center")
