@@ -23,7 +23,7 @@ Example: `Apples:5:20:Fruits`
 - Product-Level Insights: Provides details on each product’s contribution to total sales.
 
 ## Installation
-1. Clone the repository(powershell)  
+1. Clone the repository (powershell)  
 `git clone https://github.com/Sword-3300/sell-tracker.git`
 2. Install the requirements (python console)  
 `pip install -r requirements.txt`
