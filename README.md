@@ -10,16 +10,16 @@ Example: `Apples:5:20:Fruits`
 - A JSON file containing all the analyzed sales information will be created for future reference.
 
 ## Functionality
-- Sales Data Analysis:
-   Lists all products.
-   Calculates the overall price of all sold products.
-   Determines the average price of sold products.
-- Category-Based Division:
-   Groups products by category.
-   Lists all products in each category.
-   Calculates the overall price for each category.
-   Determines the average price of sold products within each category.
-- JSON Report Generation: Saves the analysis in a structured JSON file for further processing.
+- Sales Data Analysis:  
+   Lists all products.  
+   Calculates the overall price of all sold products.  
+   Determines the average price of sold products.  
+- Category-Based Division:  
+   Groups products by category.  
+   Lists all products in each category.  
+   Calculates the overall price for each category.  
+   Determines the average price of sold products within each category.  
+- JSON Report Generation: Saves the analysis in a structured JSON file for further processing.  
 - Product-Level Insights: Provides details on each product’s contribution to total sales.
 
 ## Installation
